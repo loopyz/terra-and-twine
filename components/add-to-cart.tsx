@@ -7,9 +7,11 @@ import { useTrevo } from "@trevosdk/react";
 export default function AddToCart({
   slug,
   priceCents,
+  compact = false,
 }: {
   slug: string;
   priceCents: number;
+  compact?: boolean;
 }) {
   const trevo = useTrevo();
   const router = useRouter();
@@ -36,7 +38,11 @@ export default function AddToCart({
     <button
       onClick={add}
       disabled={state === "adding"}
-      className="mt-6 w-full rounded-full bg-emerald-700 px-6 py-3 font-medium text-white transition hover:bg-emerald-800 disabled:opacity-60 sm:w-auto sm:px-10"
+      className={
+        compact
+          ? "mt-3 w-full rounded-full bg-emerald-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-800 disabled:opacity-60"
+          : "mt-6 w-full rounded-full bg-emerald-700 px-6 py-3 font-medium text-white transition hover:bg-emerald-800 disabled:opacity-60 sm:w-auto sm:px-10"
+      }
     >
       {state === "added" ? "Added ✓" : state === "adding" ? "Adding…" : "Add to cart"}
     </button>

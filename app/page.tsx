@@ -1,7 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { defineExperiment, useExperiment } from "@trevosdk/react";
 import { PRODUCTS, formatPrice } from "@/lib/products";
+import AddToCart from "@/components/add-to-cart";
+
+const INLINE_ADD_TO_CART = defineExperiment(
+  "add-inline-add-to-cart-buttons-to-the-home-catalog-grid",
+  ["control", "variant"],
+);
 
 export default function Home() {
+  const variant = useExperiment(INLINE_ADD_TO_CART);
+
   return (
     <div>
       <section className="mb-10 rounded-2xl bg-gradient-to-br from-emerald-100 to-lime-100 p-10">
@@ -41,6 +52,20 @@ export default function Home() {
               </h3>
               <p className="text-sm text-stone-500">{product.tagline}</p>
               <p className="mt-2 font-semibold">{formatPrice(product.price)}</p>
+              {variant !== "control" && (
+                <div
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                  }}
+                >
+                  <AddToCart
+                    slug={product.slug}
+                    priceCents={product.price}
+                    compact
+                  />
+                </div>
+              )}
             </Link>
           ))}
         </div>
