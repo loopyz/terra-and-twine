@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
+import TrackView from "@/components/track-view";
 
 export default async function SuccessPage({
   searchParams,
@@ -11,6 +12,13 @@ export default async function SuccessPage({
 
   return (
     <div className="py-16 text-center">
+      <TrackView
+        event="order_confirmation_viewed"
+        properties={{
+          orderId: order,
+          value: Number.isFinite(totalCents) ? totalCents / 100 : 0,
+        }}
+      />
       <p className="text-6xl">🎉</p>
       <h1 className="mt-4 text-3xl font-semibold">Order confirmed</h1>
       <p className="mt-2 text-stone-600">

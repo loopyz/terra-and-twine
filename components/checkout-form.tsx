@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTrevo } from "@trevosdk/react";
 
@@ -9,6 +9,13 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const started = useRef(false);
+
+  function start() {
+    if (started.current) return;
+    started.current = true;
+    trevo?.track("checkout_form_started", { value: totalCents / 100 });
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -45,7 +52,7 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
     "mt-1 w-full rounded-lg border border-stone-300 bg-white px-3 py-2 focus:border-emerald-600 focus:outline-none";
 
   return (
-    <form onSubmit={submit} className="mt-6 space-y-4">
+    <form onSubmit={submit} onFocus={start} className="mt-6 space-y-4">
       <label className="block text-sm font-medium">
         Full name
         <input name="name" required placeholder="Fern Enthusiast" className={field} />

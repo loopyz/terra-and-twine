@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PRODUCTS, formatPrice, getProduct } from "@/lib/products";
 import AddToCart from "@/components/add-to-cart";
+import TrackView from "@/components/track-view";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: p.slug }));
@@ -18,6 +19,10 @@ export default async function ProductPage({
 
   return (
     <div>
+      <TrackView
+        event="product_viewed"
+        properties={{ product: product.slug, value: product.price / 100 }}
+      />
       <Link href="/" className="text-sm text-stone-500 hover:text-emerald-700">
         ← Back to shop
       </Link>

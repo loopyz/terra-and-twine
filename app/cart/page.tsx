@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cartLines, cartTotal, readCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { RemoveFromCart, CheckoutButton } from "@/components/cart-actions";
+import TrackView from "@/components/track-view";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ export default async function CartPage() {
   if (lines.length === 0) {
     return (
       <div className="py-16 text-center">
+        <TrackView event="cart_viewed" properties={{ items: 0, value: 0 }} />
         <p className="text-5xl">🧺</p>
         <h1 className="mt-4 text-2xl font-semibold">Your cart is empty</h1>
         <p className="mt-2 text-stone-500">
@@ -30,6 +32,10 @@ export default async function CartPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
+      <TrackView
+        event="cart_viewed"
+        properties={{ items: lines.length, value: total / 100 }}
+      />
       <h1 className="text-2xl font-semibold">Your cart</h1>
       <ul className="mt-6 divide-y divide-stone-200">
         {lines.map(({ product, quantity }) => (
