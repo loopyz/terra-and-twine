@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Terra & Twine 🌿
 
-## Getting Started
+A demo full-stack e-commerce storefront built with Next.js (App Router), used as a
+test bed for [Trevo](https://trevosdk.com) — an AI experimentation platform that
+proposes A/B tests from your codebase and ships them as pull requests.
 
-First, run the development server:
+## Stack
+
+- Next.js 15 (App Router, server components) + TypeScript + Tailwind CSS
+- API routes for cart, checkout, and newsletter (cookie-backed cart, no database)
+- `@trevosdk/nextjs` + `@trevosdk/react` for experiments and event tracking
+
+## Conversion events
+
+| Event | Where |
+|---|---|
+| `page_view` | automatic, every page |
+| `add_to_cart` | product page → Add to cart |
+| `checkout_started` | cart → Proceed to checkout |
+| `purchase_completed` | checkout → Place order (with `value`) |
+| `newsletter_signup` | footer subscribe form |
+
+## Running locally
 
 ```bash
+npm install
+cp .env.example .env.local   # add your Trevo API key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `NEXT_PUBLIC_TREVO_API_KEY` — Trevo SDK key (`tsk_live_…`), from
+  app.trevosdk.com → Settings → API keys. Leave unset to disable the SDK.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This is a demo: checkout takes no payment and stores nothing server-side.
