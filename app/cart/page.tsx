@@ -2,6 +2,7 @@ import Link from "next/link";
 import { cartLines, cartTotal, readCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { RemoveFromCart, CheckoutButton } from "@/components/cart-actions";
+import CartSummaryVariant from "./cart-summary-variant";
 
 export const dynamic = "force-dynamic";
 
@@ -57,14 +58,16 @@ export default async function CartPage() {
           </li>
         ))}
       </ul>
-      <div className="mt-6 flex items-center justify-between border-t border-stone-200 pt-4">
-        <p className="text-stone-500">Subtotal</p>
-        <p className="text-xl font-semibold">{formatPrice(total)}</p>
-      </div>
-      <p className="mt-1 text-right text-sm text-stone-400">
-        Shipping calculated at checkout
-      </p>
-      <CheckoutButton totalCents={total} />
+      <CartSummaryVariant total={total}>
+        <div className="mt-6 flex items-center justify-between border-t border-stone-200 pt-4">
+          <p className="text-stone-500">Subtotal</p>
+          <p className="text-xl font-semibold">{formatPrice(total)}</p>
+        </div>
+        <p className="mt-1 text-right text-sm text-stone-400">
+          Shipping calculated at checkout
+        </p>
+        <CheckoutButton totalCents={total} />
+      </CartSummaryVariant>
     </div>
   );
 }
