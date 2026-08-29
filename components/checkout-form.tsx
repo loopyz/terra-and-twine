@@ -1,14 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTrevo } from "@trevosdk/react";
 
 export default function CheckoutForm({ totalCents }: { totalCents: number }) {
   const trevo = useTrevo();
   const router = useRouter();
+  const started = useRef(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function startForm() {
+    if (started.current) return;
+    started.current = true;
+    trevo?.track("checkout_form_started", {
+      experiment:
+        "progressive-disclosure-checkout-with-trust-and-summary-above-the-form",
+    });
+  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,7 +58,13 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
     <form onSubmit={submit} className="mt-6 space-y-4">
       <label className="block text-sm font-medium">
         Full name
-        <input name="name" required placeholder="Fern Enthusiast" className={field} />
+        <input
+          name="name"
+          required
+          placeholder="Fern Enthusiast"
+          onFocus={startForm}
+          className={field}
+        />
       </label>
       <label className="block text-sm font-medium">
         Email
@@ -57,6 +73,7 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
           type="email"
           required
           placeholder="you@example.com"
+          onFocus={startForm}
           className={field}
         />
       </label>
@@ -66,6 +83,7 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
           name="address"
           required
           placeholder="123 Greenhouse Lane"
+          onFocus={startForm}
           className={field}
         />
       </label>
@@ -76,6 +94,7 @@ export default function CheckoutForm({ totalCents }: { totalCents: number }) {
           inputMode="numeric"
           required
           placeholder="4242 4242 4242 4242"
+          onFocus={startForm}
           className={field}
         />
       </label>
