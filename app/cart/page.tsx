@@ -61,6 +61,9 @@ export default async function CartPage() {
         <p className="text-stone-500">Subtotal</p>
         <p className="text-xl font-semibold">{formatPrice(total)}</p>
       </div>
+      <p className="mt-1 text-right text-sm text-stone-400">
+        Shipping calculated at checkout
+      </p>
       <CheckoutButton totalCents={total} />
     </div>
   );

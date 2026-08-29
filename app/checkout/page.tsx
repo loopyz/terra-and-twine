@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cartLines, cartTotal, readCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
+import { quoteShipping } from "@/lib/shipping";
 import CheckoutForm from "@/components/checkout-form";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export default async function CheckoutPage() {
   const cart = await readCart();
   const lines = cartLines(cart);
   const total = cartTotal(cart);
+  const quote = quoteShipping(total);
 
   if (lines.length === 0) {
     return (
@@ -42,9 +44,21 @@ export default async function CheckoutPage() {
             </li>
           ))}
         </ul>
-        <div className="mt-4 flex justify-between border-t border-stone-200 pt-4 font-semibold">
-          <span>Total</span>
-          <span>{formatPrice(total)}</span>
+        <div className="mt-4 space-y-1 border-t border-stone-200 pt-4 text-sm">
+          <div className="flex justify-between text-stone-500">
+            <span>Subtotal</span>
+            <span>{formatPrice(quote.subtotalCents)}</span>
+          </div>
+          <div className="flex justify-between text-stone-500">
+            <span>Shipping</span>
+            <span>
+              {quote.freeShippingApplied ? "Free" : formatPrice(quote.shippingCents)}
+            </span>
+          </div>
+          <div className="flex justify-between pt-1 text-base font-semibold">
+            <span>Total</span>
+            <span>{formatPrice(quote.totalCents)}</span>
+          </div>
         </div>
         <p className="mt-4 text-xs text-stone-400">
           Demo checkout — no payment is taken.
