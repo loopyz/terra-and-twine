@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPrice } from "@/lib/products";
+import OrderConfirmationTracker from "./order-confirmation-tracker";
 
 export default async function SuccessPage({
   searchParams,
@@ -11,6 +12,7 @@ export default async function SuccessPage({
 
   return (
     <div className="py-16 text-center">
+      <OrderConfirmationTracker orderId={order} />
       <p className="text-6xl">🎉</p>
       <h1 className="mt-4 text-3xl font-semibold">Order confirmed</h1>
       <p className="mt-2 text-stone-600">

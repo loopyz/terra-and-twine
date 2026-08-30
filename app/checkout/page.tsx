@@ -3,6 +3,7 @@ import { cartLines, cartTotal, readCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/products";
 import { quoteShipping } from "@/lib/shipping";
 import CheckoutForm from "@/components/checkout-form";
+import CheckoutFormSteps from "@/components/checkout-form-steps";
 
 export const dynamic = "force-dynamic";
 
@@ -30,7 +31,9 @@ export default async function CheckoutPage() {
     <div className="mx-auto grid max-w-3xl grid-cols-1 gap-10 md:grid-cols-2">
       <div>
         <h1 className="text-2xl font-semibold">Checkout</h1>
-        <CheckoutForm totalCents={total} />
+        <CheckoutFormSteps totalCents={total}>
+          <CheckoutForm totalCents={total} />
+        </CheckoutFormSteps>
       </div>
       <aside className="rounded-xl border border-stone-200 bg-white p-6">
         <h2 className="font-medium">Order summary</h2>
